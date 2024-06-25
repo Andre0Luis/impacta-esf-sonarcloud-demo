@@ -47,7 +47,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Print Secret
-        run: echo ${{ secrets.SONAR_TOKEN }}
+        env:
+          MY_SECRET: ${{ secrets.SONAR_TOKEN }}
+        run: echo $MY_SECRET
           
       - name: Analyze with SonarCloud
 
