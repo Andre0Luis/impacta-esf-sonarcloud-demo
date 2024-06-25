@@ -17,4 +17,9 @@ public class DemoRestController {
 		
 	}
 
+	private String testReturn(String name){
+		System.out.println("Name aqui: " + name);
+		return name;
+	}
+
 }
