@@ -45,6 +45,22 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+            
+      - name: Build with Maven
+        run: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package
           
       - name: Analyze with SonarCloud
 
@@ -60,6 +76,8 @@ jobs:
             # mandatory
             -Dsonar.projectKey=andre0luis_sonar-cloud-class-esf
             -Dsonar.organization=andre0luis
+            -Dsonar.java.binaries=target/classes
+            -Dsonar.exclusions=**/*.java
             # Comma-separated paths to directories containing main source files.
             #-Dsonar.sources= # optional, default is project base directory
             # Comma-separated paths to directories containing test source files.
